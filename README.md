@@ -1,3 +1,14 @@
+My changes in order to support my ESP8266 based machine.
+
+My hardware
+-----
+- Wemos D1 Mini Board
+- 2x Steppers attached to ULN2003 
+- Hobby Servo
+
+Original ReadMe
+
+
 polargraph_server_a1
 ====================
 
