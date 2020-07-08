@@ -30,6 +30,7 @@ boolean comms_waitForNextCommand(char *buf)
   boolean terminated = false;
   while (!terminated)
   {
+    yield();
 #ifdef DEBUG_COMMS    
     Serial.print(F("."));
 #endif    
@@ -59,7 +60,7 @@ boolean comms_waitForNextCommand(char *buf)
 #ifdef DEBUG_COMMS      
       Serial.println("");
 #endif
-      comms_ready();
+      comms_ready();      
       idleTime = millis();
     }
     
@@ -261,5 +262,3 @@ void comms_unrecognisedCommand(String &com)
   Serial.print(com);
   Serial.println(F(" not recognised."));
 }  
-
-

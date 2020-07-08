@@ -10,7 +10,7 @@ without "store" features. Doesn't actually do anything except
 pass the command to the real executeCommand.  */
 void impl_processCommand(String com)
 {
-#if MICROCONTROLLER == MC_UNO
+#if MICROCONTROLLER == MC_UNO || MICROCONTROLLER == MC_ESP8266
   impl_executeCommand(com);
 #endif
 #if MICROCONTROLLER == MC_MEGA
@@ -89,6 +89,7 @@ void impl_executeCommand(String &com)
 
 void impl_runBackgroundProcesses()
 {
+  yield();
   long motorCutoffTime = millis() - lastOperationTime;
   if ((automaticPowerDown) && (powerIsOn) && (motorCutoffTime > motorIdleTimeBeforePowerDown))
   {
@@ -271,5 +272,3 @@ void impl_releaseMotors()
 #endif
   powerIsOn = false;  
 }
-
-

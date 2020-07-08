@@ -36,8 +36,9 @@ There are five config sections:
 // ======================================================
 // UNO or MEGA. Uncomment the line for the kind of board you have.
 #ifndef MICROCONTROLLER
-#define MICROCONTROLLER MC_UNO
+//#define MICROCONTROLLER MC_UNO
 //#define MICROCONTROLLER MC_MEGA
+#define MICROCONTROLLER MC_ESP8266
 #endif
 
 
@@ -55,8 +56,8 @@ There are five config sections:
 
 //   i. Adafruit Motorshield v1. The original, and still the best.
 //   -------------------------------------------------------------
-#define ADAFRUIT_MOTORSHIELD_V1
-#include <AFMotor.h>
+//#define ADAFRUIT_MOTORSHIELD_V1
+//#include <AFMotor.h>
 
 //   ii. Adafruit Motorshield v2. It's all squealy.
 //   ----------------------------------------------
@@ -73,12 +74,12 @@ There are five config sections:
 //   iv. Using a signal amplifier like a UNL2003? 
 //   --------------------------------------------
 //   Don't forget to define your pins in 'configuration.ino'.
-//   #define UNL2003_DRIVER
+#define UNL2003_DRIVER
 
 
 // 4.  Turn on some debugging code if you want horror
 // =================================================
-//#define DEBUG
+#define DEBUG
 //#define DEBUG_COMMS
 //#define DEBUG_PENLIFT
 //#define DEBUG_PIXEL
@@ -100,13 +101,14 @@ There are five config sections:
 // Some microcontroller's names
 #define MC_UNO 1
 #define MC_MEGA 2
+#define MC_ESP8266 3
 
 #include <AccelStepper.h>
 #include <Servo.h>
 #include <EEPROM.h>
 #include "EEPROMAnything.h"
 
-const String FIRMWARE_VERSION_NO = "1.2.1";
+const String FIRMWARE_VERSION_NO = "1.3.0";
 
 //  EEPROM addresses
 const byte EEPROM_MACHINE_WIDTH = 0;
@@ -132,7 +134,7 @@ const int DEFAULT_UP_POSITION = 180;
 static int upPosition = DEFAULT_UP_POSITION; // defaults
 static int downPosition = DEFAULT_DOWN_POSITION;
 static int penLiftSpeed = 3; // ms between steps of moving motor
-const byte PEN_HEIGHT_SERVO_PIN = 9; //UNL2003 driver uses pin 9
+const byte PEN_HEIGHT_SERVO_PIN = 16; //UNL2003 driver uses pin 9 
 boolean isPenUp = false;
 
 // Machine specification defaults
@@ -266,6 +268,8 @@ void setup()
   Serial.println("MC_MEGA");
   #elif MICROCONTROLLER == MC_UNO
   Serial.println("MC_UNO");
+  #elif MICROCONTROLLER == MC_ESP8266
+  Serial.println("MC_ESP8266");
   #else
   Serial.println("No MC");
   #endif
@@ -294,7 +298,7 @@ void setup()
 }
 
 void loop()
-{
+{ 
   if (comms_waitForNextCommand(lastCommand)) 
   {
 #ifdef DEBUG_COMMS    
@@ -388,5 +392,3 @@ static float scaleY = 1.0;
 static int rotateTransform = 0;
 
 #endif
-
-
